@@ -1,10 +1,11 @@
 ﻿using EFactManagerAPI.Data;
 using EFactManagerAPI.Models;
 using EFactManagerAPI.Repository.IRepository;
+using Microsoft.EntityFrameworkCore;
 
 namespace EFactManagerAPI.Repository
 {
-    public class ZoneRepository : Repository<ZoneEntity>, IZoneRepository
+    public class ZoneRepository : Repository<ZoneConfig>, IZoneRepository
     {
         private readonly ApplicationDbContext _db;
         public ZoneRepository(ApplicationDbContext db) : base(db)
@@ -12,7 +13,7 @@ namespace EFactManagerAPI.Repository
             _db = db;
         }
 
-        public async Task<ZoneEntity> UpdateAsync(ZoneEntity entity)
+        public async Task<ZoneConfig> UpdateAsync(ZoneConfig entity)
         {
             entity.dateUpdate = DateTime.Now;
             _db.Zones.Update(entity);
@@ -20,5 +21,11 @@ namespace EFactManagerAPI.Repository
             return entity;
         }
 
+        public async Task<List<ZoneConfig>> GetZonesByRecordIdAsync(int recordId)
+        {
+            // Eager load the Zones collection for each RecordEntity
+            var records = await _db.Zones.Where(r => r.RecordConfigId == recordId).Include(zr=>zr.ZoneError).ToListAsync();
+            return records;
+        }
     }
 }

@@ -3,12 +3,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace EFactManagerAPI.Models.Dto.ZonesContentDTO
 {
-    public class ZoneContentDTO
+    public class ZoneContentCreateDTO
     {
-        [Required]
-        public int id { get; set; }
         public string content { get; set; }
-        public DateTime dateCreation { get; set; }
-        public ICollection<FieldEntity> Fields { get; set; }
+        public string description { get; set; }
+        public int FieldId { get; set; }
+        public Field Field { get; set; }
     }
 }

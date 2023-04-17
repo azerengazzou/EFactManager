@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace EFactManagerAPI.Models
 {
-    public class ZoneEntity
+    public class ZoneConfig
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -16,12 +16,15 @@ namespace EFactManagerAPI.Models
         public int zonelength { get; set; }
         [Required]
         public int startPosition { get; set; }
-        public bool isError { get; set; }
         public string zoneType { get; set; }
         public string description { get; set; }
         public DateTime dateCreation { get; set; }
         public DateTime dateUpdate { get; set; }
-        public ICollection<FieldEntity> Fields { get; set; }
+
+        public int RecordConfigId { get; set; }
+        public RecordConfig RecordConfig { get; set; }
+        public ZoneError ZoneError { get; set; }
+        public List<Field> Fields { get; set; }
 
     }
 }

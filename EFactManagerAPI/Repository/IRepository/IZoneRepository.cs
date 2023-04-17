@@ -2,8 +2,9 @@
 
 namespace EFactManagerAPI.Repository.IRepository
 {
-    public interface IZoneRepository : IRepository<ZoneEntity>
+    public interface IZoneRepository : IRepository<ZoneConfig>
     {
-        Task<ZoneEntity> UpdateAsync(ZoneEntity entity);
+        Task<ZoneConfig> UpdateAsync(ZoneConfig entity);
+        Task<List<ZoneConfig>> GetZonesByRecordIdAsync(int recordId);
     }
 }

@@ -12,25 +12,26 @@ namespace EFactManagerAPI
     public class MappingConfig : Profile
     {
         public MappingConfig() {
-            CreateMap<FileEntity, FileDTO>().ReverseMap();
-            CreateMap<FileEntity, FileUpdateDTO>().ReverseMap();
-            CreateMap<FileEntity, FileCreateDTO>().ReverseMap();
+            CreateMap<EfactFile, FileDTO>().ReverseMap();
+            CreateMap<EfactFile, FileUpdateDTO>().ReverseMap();
+            CreateMap<EfactFile, FileCreateDTO>().ReverseMap();
 
-            CreateMap<MessageEntity, MessageDTO>().ReverseMap();
-            CreateMap<MessageEntity, MessageCreateDTO>().ReverseMap();
+            CreateMap<MessageType, MessageDTO>().ReverseMap();
+            CreateMap<MessageType, MessageCreateDTO>().ReverseMap();
 
-            CreateMap<RecordEntity, RecordDTO>().ReverseMap();
-            CreateMap<RecordEntity, RecordCreateDTO>().ReverseMap();
+            CreateMap<RecordConfig, RecordDTO>().ReverseMap();
+            CreateMap<RecordConfig, RecordCreateDTO>().ReverseMap();
 
-            CreateMap<ZoneEntity, ZoneDTO>().ReverseMap();
-            CreateMap<ZoneEntity, ZoneCreateDTO>().ReverseMap();
-            CreateMap<ZoneEntity, ZoneUpdateDTO>().ReverseMap();
+            CreateMap<ZoneConfig, ZoneDTO>().ReverseMap();
+            CreateMap<ZoneConfig, ZoneCreateDTO>().ReverseMap();
+            CreateMap<ZoneConfig, ZoneUpdateDTO>().ReverseMap();
 
-            CreateMap<ZoneContentEntity, ZoneContentDTO>().ReverseMap();
-            CreateMap<ZoneContentEntity, ZoneContentCreateDTO>().ReverseMap();
+            CreateMap<ZoneContent, ZoneContentDTO>().ReverseMap();
+            CreateMap<ZoneContent, ZoneContentCreateDTO>().ReverseMap();
 
-            CreateMap<FieldEntity, FieldDTO>().ReverseMap();
-            CreateMap<FieldEntity, FieldCreateDTO>().ReverseMap();
+            CreateMap<Field, FieldDTO>().ReverseMap();
+            CreateMap<Field, FieldCreateDTO>().ReverseMap();
+
         }
     }
 }

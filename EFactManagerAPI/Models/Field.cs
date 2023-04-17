@@ -1,9 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace EFactManagerAPI.Models.Dto.FieldsDTO
+namespace EFactManagerAPI.Models
 {
-    public class FieldDTO
+    public class Field
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Required]
         public int id { get; set; }
         public int FileId { get; set; }
@@ -11,6 +14,7 @@ namespace EFactManagerAPI.Models.Dto.FieldsDTO
 
         public int ZoneConfigId { get; set; }
         public ZoneConfig ZoneConfig { get; set; }
+
         public ZoneContent ZoneContent { get; set; }
     }
 }

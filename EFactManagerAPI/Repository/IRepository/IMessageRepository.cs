@@ -2,9 +2,10 @@
 
 namespace EFactManagerAPI.Repository.IRepository
 {
-    public interface IMessageRepository : IRepository<MessageEntity>
+    public interface IMessageRepository : IRepository<MessageType>
     {
-        Task<MessageEntity> UpdateAsync(MessageEntity entity);
-        MessageEntity GetMessageByCode(string code);
+        Task<MessageType> UpdateAsync(MessageType entity);
+        MessageType GetMessageByCode(string code);
+        Task<MessageType> GetMessageByIdWithRecords(int messageId);
     }
 }

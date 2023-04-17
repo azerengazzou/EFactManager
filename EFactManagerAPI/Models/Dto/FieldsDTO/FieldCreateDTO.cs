@@ -1,16 +1,17 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using EFactManagerAPI.Models.Dto.ZonesContentDTO;
+using System.ComponentModel.DataAnnotations;
 
 namespace EFactManagerAPI.Models.Dto.FieldsDTO
 {
     public class FieldCreateDTO
     {
         [Required]
-        public int messageId { get; set; }
-        [Required]
-        public int recordId { get; set; }
-        [Required]
-        public int zoneContentId { get; set; }
-        [Required]
-        public int zoneId { get; set; }
+        public int id { get; set; }
+        public int FileId { get; set; }
+        public EfactFile File { get; set; }
+
+        public int ZoneConfigId { get; set; }
+        public ZoneConfig ZoneConfig { get; set; }
+        public ZoneContentCreateDTO ZoneContent { get; set; }
     }
 }

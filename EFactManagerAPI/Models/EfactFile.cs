@@ -1,9 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-
 namespace EFactManagerAPI.Models
 {
-    public class FileEntity
+    public class EfactFile
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -16,5 +15,6 @@ namespace EFactManagerAPI.Models
         public string fileUploadedContent { get; set; }
         public DateTime upload_date { get; set; }
         public DateTime update_date { get; set;}
+        public List<Field> Fields { get; set; }
     }
 }

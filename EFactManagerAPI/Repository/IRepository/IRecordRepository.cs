@@ -2,10 +2,11 @@
 
 namespace EFactManagerAPI.Repository.IRepository
 {
-    public interface IRecordRepository : IRepository<RecordEntity>
+    public interface IRecordRepository : IRepository<RecordConfig>
     {
-        Task<RecordEntity> UpdateAsync(RecordEntity entity);
+        Task<RecordConfig> UpdateAsync(RecordConfig entity);
+        //Task<List<RecordConfig>> GetRecordsByField(int fieldId);
         //Task<List<RecordEntity>> GetAllRecordsWithZonesAsync();
-        //Task<List<RecordEntity>> GetRecordsByMessageIdAsync(int msgId);
+        Task<List<RecordConfig>> GetRecordsByMessageIdAsync(int messageId);
     }
 }

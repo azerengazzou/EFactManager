@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EFactManagerAPI.Repository
 {
-    public class RecordRepository : Repository<RecordEntity>, IRecordRepository
+    public class RecordRepository : Repository<RecordConfig>, IRecordRepository
     {
         private readonly ApplicationDbContext _db;
         public RecordRepository(ApplicationDbContext db) : base(db)
@@ -13,7 +13,7 @@ namespace EFactManagerAPI.Repository
             _db = db;
         }
 
-        public async Task<RecordEntity> UpdateAsync(RecordEntity entity)
+        public async Task<RecordConfig> UpdateAsync(RecordConfig entity)
         {
             entity.dateUpdate = DateTime.Now;
             _db.Records.Update(entity);
@@ -21,22 +21,12 @@ namespace EFactManagerAPI.Repository
             return entity;
         }
 
-        //public async Task<List<RecordEntity>> GetAllRecordsWithZonesAsync()
-        //{
-        //    // Eager load the Zones collection for each RecordEntity
-        //    var recordsWithZones = await _db.Records
-        //        .Include(r => r.Zones)
-        //        .ToListAsync();
-        //    return recordsWithZones;
-        //}
+        public async Task<List<RecordConfig>> GetRecordsByMessageIdAsync(int messageId)
+        {
+            // Eager load the Zones collection for each RecordEntity
+            var records = await _db.Records.Where(m=>m.MessageTypeId == messageId).ToListAsync();
+            return records;
+        }
 
-        //public Task<List<RecordEntity>> GetRecordsByMessageIdAsync(int msgId)
-        //{
-        //    // Eager load the Zones collection for each RecordEntity
-        //    var recordsWithZones = _db.Records
-        //        .Include(r => r.Zones).Where(m=>m.messageId==msgId)
-        //        .ToListAsync();
-        //    return recordsWithZones;
-        //}
     }
 }

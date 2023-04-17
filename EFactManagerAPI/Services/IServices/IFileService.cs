@@ -7,6 +7,6 @@ namespace EFactManagerAPI.Services.IServices
 {
     public interface IFileService 
     {
-        Task<FileEntity> CreateFileService(IFormFile file);
+        Task<EfactFile> CreateFileService(IFormFile file);
     }
 }

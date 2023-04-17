@@ -16,7 +16,7 @@ builder.Services.AddScoped<IFileRepository, FileRepository>();
 builder.Services.AddScoped<IRecordRepository, RecordRepository>();
 builder.Services.AddScoped<IZoneRepository, ZoneRepository>();
 builder.Services.AddScoped<IFieldRepository, FieldRepository>();
-builder.Services.AddScoped<IZoneContentRepository, ZoneContentRepository>();
+builder.Services.AddScoped<IEfactFileContentRepository, EfactFileContentRepository>();
 
 builder.Services.AddScoped<IFileService, FileService>();
 

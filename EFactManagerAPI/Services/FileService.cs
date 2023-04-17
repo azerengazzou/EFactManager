@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using EFactManagerAPI.Controllers;
 using EFactManagerAPI.Models;
+using EFactManagerAPI.Models.Dto.FieldsDTO;
 using EFactManagerAPI.Models.Dto.FilesDTO;
+using EFactManagerAPI.Models.Dto.ZonesContentDTO;
 using EFactManagerAPI.Repository.IRepository;
 using EFactManagerAPI.Services.IServices;
 using Microsoft.AspNetCore.Mvc;
@@ -15,22 +17,31 @@ namespace EFactManagerAPI.Services
         private readonly IFileRepository _dbfile;
         private readonly IMessageRepository _messageRepository;
         private readonly IRecordRepository _recordRepository;
+        private readonly IFieldRepository _fieldRepository;
+        private readonly IZoneRepository _zoneRepository;
+        private readonly IEfactFileContentRepository _factFileContentRepository;
         private readonly IMapper _mapper;
-        public FileService(IFileRepository fileRepository, IRecordRepository recordRepository, IMessageRepository messageRepository,IMapper mapper)
+        public FileService(IFileRepository fileRepository, 
+                            IRecordRepository recordRepository, IMessageRepository messageRepository, IZoneRepository zoneRepository,
+                            IEfactFileContentRepository factFileContentRepository,
+                            IMapper mapper, IFieldRepository fieldRepository)
         {
-            _dbfile = fileRepository;
             _mapper = mapper;
-            _messageRepository = messageRepository;
+            _dbfile = fileRepository;
             _recordRepository = recordRepository;
+            _messageRepository = messageRepository;
+            _fieldRepository = fieldRepository;
+            _zoneRepository= zoneRepository;
+            _factFileContentRepository = factFileContentRepository;
         }
 
 
 
-        public async Task<FileEntity> CreateFileService(IFormFile file)
+        public async Task<EfactFile> CreateFileService(IFormFile file)
         {
             //préparation de modèle fichier
             var fileContent = new StreamReader(file.OpenReadStream()).ReadToEnd();
-            var model = new FileCreateDTO
+            var filemodel = new FileCreateDTO
             {
                 fileName = file.FileName,
                 size = file.Length,
@@ -41,17 +52,16 @@ namespace EFactManagerAPI.Services
             };
             var code = fileContent.Substring(0, 6);
             var message = _messageRepository.GetMessageByCode(code);
-            if (!(message==null))
-            { model.Description = message.description; }
-            
-            BackUpFileCreation(file);
-
-            //splitbodycontent(fileContent, message.id);
-            
-            //SplitContentIntoFileStructure(fileContent, model.fileName);
-            FileEntity modeltodb = _mapper.Map<FileEntity>(model);
-            await _dbfile.CreateAsync(modeltodb);
-            return modeltodb;
+            if(message == null) { return null; } else
+            {
+                EfactFile modeltodb = _mapper.Map<EfactFile>(filemodel);
+                await _dbfile.CreateAsync(modeltodb);
+                
+                filemodel.Description = message.description;
+                BackUpFileCreation(file);
+                splitbodycontent(fileContent, message.id, modeltodb.id,modeltodb);
+                return modeltodb;
+            }
 
         }
 
@@ -67,7 +77,6 @@ namespace EFactManagerAPI.Services
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     file.CopyToAsync(stream);
-
                 }
                 return true;
             }
@@ -77,43 +86,63 @@ namespace EFactManagerAPI.Services
             }
         }
 
-
-
-        public void splitbodycontent(string content, int messageId)
+        public async void splitbodycontent(string contentToSplit, int messageId,int fileId,EfactFile filemodel)
         {
+            var records = _recordRepository.GetRecordsByMessageIdAsync(messageId).Result;
+            List<RecordConfig> bodyrecords = records.Where(r => r.recordPlacement == "body").ToList();
+            string header = contentToSplit.Substring(0, 227);
+            string restOfFile = contentToSplit.Substring(227);
+            List<string> lines = new List<string>();
+            int recordLength = 0;
 
-            //var records = _recordRepository.GetRecordsByMessageIdAsync(messageId).Result;
-            //List<RecordEntity> bodyrecords = records.Where(r => r.recordPlacement == "body").ToList();
-            
-            //string header = content.Substring(0, 227);
-            //string restOfFile = content.Substring(227);
-            //List<string> lines = new List<string>();
-            //int recordLength = 0;
+            while (restOfFile.Length >= 0)
+            {
+                string recordStartNumber = restOfFile.Substring(0, 2);
+                var specificRec = bodyrecords.FirstOrDefault(r => r.recordNumber == recordStartNumber);
+                var zones = _zoneRepository.GetZonesByRecordIdAsync(specificRec.id).Result;
+                recordLength = specificRec.recordLength;
+                var recordSplit = restOfFile.Substring(0,recordLength);
+                restOfFile = restOfFile.Substring(recordLength);
 
-            //while (restOfFile.Length >= 0)
-            //{
-            //    string recStartDetect = restOfFile.Substring(0, 2);
-            //    var specificRec =bodyrecords.FirstOrDefault(r=>r.recordValue == recStartDetect);
 
-            //    recordLength = specificRec.recordLength;
-            //    var zonesOfRecord = specificRec.Zones;
-            //    var record = restOfFile.Substring(0,recordLength);
-            //    restOfFile = restOfFile.Substring(recordLength);
+                foreach (ZoneConfig zone in zones)
+                {
+                    var zonesplit = recordSplit.Substring(zone.startPosition - 1, zone.zonelength);
 
-            //    foreach (ZoneEntity zone in zonesOfRecord)
-            //    {
-            //        var zonesplit = record.Substring(zone.startPosition - 1, zone.zonelength);
-            //        lines.Add(zonesplit+"= "+zone.zoneSection);
-            //        record.Substring(recordLength - zone.zonelength);
-            //        if (recordLength == 0)
-            //        {
-            //            break;
-            //        }
-            //    }
-            //}
-           
+                    var contentModel = new ZoneContentCreateDTO
+                    {
+                        content = zonesplit,
+                        description = zone.description,
+                    };
+
+                    var field = new Field
+                    {
+                        File = filemodel,
+                        ZoneConfig = zone,
+                        FileId = filemodel.id,
+                    };
+                    contentModel.Field = field;
+
+                    // First create the zone content
+                    ZoneContent contentModeltoDB = _mapper.Map<ZoneContent>(contentModel);
+                   await _factFileContentRepository.CreateAsync(contentModeltoDB);
+
+                    // Then assign the zone content to the field
+                    field.ZoneContent = contentModeltoDB;
+                    // Finally, create the field with the assigned zone content
+                    // Field fieldModeltoDB = _mapper.Map<Field>(field);
+                    // await _fieldRepository.CreateAsync(fieldModeltoDB);
+                    Console.WriteLine(field);
+                    recordSplit = recordSplit.Substring(zone.zonelength);
+
+                    if (recordLength == 0)
+                    {
+                        break;
+                    }
+                }
+            }
+
         }
-
         public string createDateForFileUse()
         {
             DateTime dateTime = DateTime.Now;

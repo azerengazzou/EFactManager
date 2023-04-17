@@ -26,15 +26,13 @@ namespace EFactManagerAPI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<RecordDTO>>> GetRecords()
         {
-            IEnumerable<RecordEntity> recordsList = await _dbrecord.GetAllAsync();
+            IEnumerable<RecordConfig> recordsList = await _dbrecord.GetAllAsync();
             return Ok(_mapper.Map<List<RecordDTO>>(recordsList));
         }
 
-
-
-        //[HttpGet("GetAllRecordsWithZones")]
+        //[HttpGet("GetAllRecordsByFieldId")]
         //[ProducesResponseType(StatusCodes.Status200OK)]
-        //public async Task<IActionResult> GetAllRecordsWithZones()
+        //public async Task<IActionResult> GetAllRecordsByFieldId()
         //{
         //    // Get all records with related zones from the repository
         //    var recordsWithZones = await _dbrecord.GetAllRecordsWithZonesAsync();
@@ -76,7 +74,7 @@ namespace EFactManagerAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> CreateMessage(RecordCreateDTO recordCreateDTO)
         {
-            if (await _dbrecord.GetAsync(u => u.recordType.ToLower() == recordCreateDTO.recordType.ToLower()) != null)
+            if (await _dbrecord.GetAsync(u => u.recordNumber.ToLower() == recordCreateDTO.recordNumber.ToLower()) != null)
             {
                 ModelState.AddModelError("CustomError", "Record already exist!");
                 return BadRequest(ModelState);
@@ -85,7 +83,7 @@ namespace EFactManagerAPI.Controllers
             {
                 return BadRequest();
             }
-            RecordEntity record = _mapper.Map<RecordEntity>(recordCreateDTO);
+            RecordConfig record = _mapper.Map<RecordConfig>(recordCreateDTO);
             await _dbrecord.CreateAsync(record);
             return CreatedAtRoute("GetRecord", new { id = record.id }, record);
         }

@@ -25,7 +25,7 @@ namespace EFactManagerAPI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<ZoneDTO>>> GetZones()
         {
-            IEnumerable<ZoneEntity> zonesList = await _dbzones.GetAllAsync();
+            IEnumerable<ZoneConfig> zonesList = await _dbzones.GetAllAsync();
             return Ok(_mapper.Map<List<ZoneDTO>>(zonesList));
         }
 
@@ -42,6 +42,17 @@ namespace EFactManagerAPI.Controllers
                 return NotFound();
             }
             return Ok(_mapper.Map<ZoneDTO>(record));
+        }
+
+        [HttpGet("GetAllZonesByRecordId")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAllZonesByRecordId(int recId)
+        {
+            // Get all records with related zones from the repository
+            var zonesByrecordId = await _dbzones.GetZonesByRecordIdAsync(recId);
+
+            // Return the records with related zones in the response
+            return Ok(zonesByrecordId);
         }
 
         [HttpPost]
@@ -61,7 +72,7 @@ namespace EFactManagerAPI.Controllers
             {
                 return BadRequest();
             }
-            ZoneEntity zone = _mapper.Map<ZoneEntity>(zoneCreateDTO);
+            ZoneConfig zone = _mapper.Map<ZoneConfig>(zoneCreateDTO);
             await _dbzones.CreateAsync(zone);
             return CreatedAtRoute("GetRecord", new { id = zone.id }, zone);
         }

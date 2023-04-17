@@ -28,7 +28,7 @@ namespace EFactManagerAPI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<MessageDTO>>> GetMessages()
         {
-            IEnumerable<MessageEntity> messageList = await _dbmessage.GetAllAsync();
+            IEnumerable<MessageType> messageList = await _dbmessage.GetAllAsync();
             return Ok(_mapper.Map<List<MessageDTO>>(messageList));
         }
 
@@ -85,7 +85,7 @@ namespace EFactManagerAPI.Controllers
                 {
                     return BadRequest();
                 }
-                MessageEntity message = _mapper.Map<MessageEntity>(messageCreateDTO);
+                MessageType message = _mapper.Map<MessageType>(messageCreateDTO);
                 await _dbmessage.CreateAsync(message);
                 return CreatedAtRoute("GetMessageById", new { id = message.id }, message);
         }

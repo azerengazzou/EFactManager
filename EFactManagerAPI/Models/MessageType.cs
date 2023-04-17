@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace EFactManagerAPI.Models
 {
-    public class MessageEntity
+    public class MessageType
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -17,7 +17,7 @@ namespace EFactManagerAPI.Models
         public DateTime dateCreation { get; set; }
         public DateTime dateUpdate { get; set; }
 
-        public ICollection<FieldEntity> Fields { get; set; }
+        public List<RecordConfig> RecordConfigs { get; set; }
 
     }
 }

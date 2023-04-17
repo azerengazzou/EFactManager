@@ -3,8 +3,8 @@ using System.Linq.Expressions;
 
 namespace EFactManagerAPI.Repository.IRepository
 {
-    public interface IFileRepository : IRepository<FileEntity>
+    public interface IFileRepository : IRepository<EfactFile>
     {
-        Task<FileEntity> UpdateAsync(FileEntity entity);
+        Task<EfactFile> UpdateAsync(EfactFile entity);
     }
 }

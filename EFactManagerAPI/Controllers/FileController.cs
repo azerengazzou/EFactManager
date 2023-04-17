@@ -33,7 +33,7 @@ namespace EFactManagerAPI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<FileDTO>>> GetFiles()
         {
-            IEnumerable<FileEntity> fileList = await _dbFile.GetAllAsync();
+            IEnumerable<EfactFile> fileList = await _dbFile.GetAllAsync();
             return Ok(_mapper.Map<List<FileDTO>>(fileList));
         }
 
@@ -119,7 +119,7 @@ namespace EFactManagerAPI.Controllers
                 return BadRequest();
             }
 
-            FileEntity model = _mapper.Map<FileEntity>(fileUpdateDTO);
+            EfactFile model = _mapper.Map<EfactFile>(fileUpdateDTO);
             await _dbFile.UpdateAsync(model);
             await _dbFile.Save();
             return NoContent();
@@ -147,7 +147,7 @@ namespace EFactManagerAPI.Controllers
             {
                 return BadRequest(ModelState);
             }
-            FileEntity villatodb = _mapper.Map<FileEntity>(filetopatch);
+            EfactFile villatodb = _mapper.Map<EfactFile>(filetopatch);
             await _dbFile.UpdateAsync(villatodb);
             return NoContent();
         }
