@@ -6,5 +6,6 @@ namespace EFactManagerAPI.Repository.IRepository
     public interface IFileRepository : IRepository<EfactFile>
     {
         Task<EfactFile> UpdateAsync(EfactFile entity);
+        Task<EfactFile> GetFileById(int id);
     }
 }

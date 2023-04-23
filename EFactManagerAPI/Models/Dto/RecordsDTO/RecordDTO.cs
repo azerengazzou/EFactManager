@@ -17,6 +17,5 @@ namespace EFactManagerAPI.Models.Dto.RecordsDTO
         public DateTime dateUpdate { get; set; }
         public int MessageTypeId { get; set; }
         public MessageType MessageType { get; set; }
-        public List<ZoneConfig> ZoneConfigs { get; set; }
     }
 }

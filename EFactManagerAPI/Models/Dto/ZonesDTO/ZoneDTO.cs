@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using EFactManagerAPI.Models.Dto.RecordsDTO;
+using System.ComponentModel.DataAnnotations;
 
 namespace EFactManagerAPI.Models.Dto.ZonesDTO
 {
@@ -20,11 +21,10 @@ namespace EFactManagerAPI.Models.Dto.ZonesDTO
 
 
         public int RecordConfigId { get; set; }
-        public RecordConfig RecordConfig { get; set; }
+        public RecordDTO RecordConfig { get; set; }
         public ZoneError ZoneError { get; set; }
 
         public int FieldId { get; set; }
-        public Field Field { get; set; }
     
     }
 }

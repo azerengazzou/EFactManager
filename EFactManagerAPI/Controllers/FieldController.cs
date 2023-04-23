@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using EFactManagerAPI.Models.Dto.FieldsDTO;
 using Microsoft.VisualBasic;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace EFactManagerAPI.Controllers
 {
@@ -13,20 +14,13 @@ namespace EFactManagerAPI.Controllers
     [ApiController]
     public class FieldController : ControllerBase
     {
+
         private readonly IFieldRepository _dbfield;
-        private readonly IMessageRepository _dbmessage;
-        private readonly IRecordRepository _dbrecord;
-        private readonly IZoneRepository _dbzone;
-        private readonly IEfactFileContentRepository _dbzoneContent;
         private readonly IMapper _mapper;
 
-        public FieldController(IFieldRepository dbfield,IMessageRepository dbmessage, IRecordRepository dbrecord, IZoneRepository dbzone, IEfactFileContentRepository dbzoneContent, IMapper mapper)
+        public FieldController(IFieldRepository dbfield,IMapper mapper)
         {
             _dbfield = dbfield;
-            _dbmessage = dbmessage;
-            _dbrecord = dbrecord;
-            _dbzone = dbzone;
-            _dbzoneContent = dbzoneContent;
             _mapper = mapper;
         }
 
@@ -55,10 +49,14 @@ namespace EFactManagerAPI.Controllers
 
         [HttpGet("GetAllFieldsByFileId")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<FieldDTO>>> GetAllFieldsByFileId(int fileId)
+        [ResponseCache(Duration = 500)]
+        public async Task<ActionResult<IEnumerable<FieldDTO>>> GetAllFieldsByFileId(int fileId, int pageNumber, int pageSize)
         {
-            IEnumerable<Field> fieldList = await _dbfield.GetFieldsByFileId(fileId);
-            return Ok(_mapper.Map<List<FieldDTO>>(fieldList));
+
+            var fields = await _dbfield.GetFieldsByFileId(fileId);
+            var fieldsPage = fields.Skip((pageNumber - 1) * pageSize).Take(pageSize);
+            var fieldsDTO = _mapper.Map<List<FieldDTO>>(fieldsPage);
+            return Ok(fieldsDTO);
         }
 
         //[HttpGet("GetFieldsByMessageID")]

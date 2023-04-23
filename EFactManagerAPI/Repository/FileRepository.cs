@@ -1,5 +1,6 @@
 ﻿using EFactManagerAPI.Data;
 using EFactManagerAPI.Models;
+using EFactManagerAPI.Models.Dto.FilesDTO;
 using EFactManagerAPI.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
@@ -20,6 +21,16 @@ namespace EFactManagerAPI.Repository
             _db.Files.Update(entity);
             await _db.SaveChangesAsync();
             return entity;
+        }
+
+        public async Task<EfactFile> GetFileById(int id)
+        {
+            var filedata=await _db.Files.FirstOrDefaultAsync(fi => fi.id == id);
+            if (filedata != null)
+            {
+                return filedata;
+            }
+            return null;
         }
 
     }

@@ -4,6 +4,7 @@ using EFactManagerAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EFactManagerAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230421001137_MigrationDataToDB")]
+    partial class MigrationDataToDB
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,8 +66,8 @@ namespace EFactManagerAPI.Migrations
                             fileName = "Test File",
                             fileUploadedContent = "testtes",
                             size = 1.5f,
-                            update_date = new DateTime(2023, 4, 21, 1, 15, 18, 319, DateTimeKind.Local).AddTicks(2268),
-                            upload_date = new DateTime(2023, 4, 21, 1, 15, 18, 319, DateTimeKind.Local).AddTicks(2285)
+                            update_date = new DateTime(2023, 4, 21, 1, 11, 36, 885, DateTimeKind.Local).AddTicks(5734),
+                            upload_date = new DateTime(2023, 4, 21, 1, 11, 36, 885, DateTimeKind.Local).AddTicks(5750)
                         });
                 });
 
@@ -121,8 +124,8 @@ namespace EFactManagerAPI.Migrations
                         new
                         {
                             id = 1,
-                            dateCreation = new DateTime(2023, 4, 21, 1, 15, 18, 319, DateTimeKind.Local).AddTicks(3045),
-                            dateUpdate = new DateTime(2023, 4, 21, 1, 15, 18, 319, DateTimeKind.Local).AddTicks(3048),
+                            dateCreation = new DateTime(2023, 4, 21, 1, 11, 36, 885, DateTimeKind.Local).AddTicks(7525),
+                            dateUpdate = new DateTime(2023, 4, 21, 1, 11, 36, 885, DateTimeKind.Local).AddTicks(7531),
                             description = "message contenant le fichier de facturation transmis par le prestataire",
                             messageCode = "920000"
                         });
@@ -170,8 +173,8 @@ namespace EFactManagerAPI.Migrations
                         {
                             id = 1,
                             MessageTypeId = 1,
-                            dateCreation = new DateTime(2023, 4, 21, 1, 15, 18, 319, DateTimeKind.Local).AddTicks(3083),
-                            dateUpdate = new DateTime(2023, 4, 21, 1, 15, 18, 319, DateTimeKind.Local).AddTicks(3085),
+                            dateCreation = new DateTime(2023, 4, 21, 1, 11, 36, 885, DateTimeKind.Local).AddTicks(7582),
+                            dateUpdate = new DateTime(2023, 4, 21, 1, 11, 36, 885, DateTimeKind.Local).AddTicks(7584),
                             description = "Enregistrement de type 10",
                             recordLength = 350,
                             recordNumber = "10",
@@ -181,8 +184,8 @@ namespace EFactManagerAPI.Migrations
                         {
                             id = 2,
                             MessageTypeId = 1,
-                            dateCreation = new DateTime(2023, 4, 21, 1, 15, 18, 319, DateTimeKind.Local).AddTicks(3088),
-                            dateUpdate = new DateTime(2023, 4, 21, 1, 15, 18, 319, DateTimeKind.Local).AddTicks(3088),
+                            dateCreation = new DateTime(2023, 4, 21, 1, 11, 36, 885, DateTimeKind.Local).AddTicks(7725),
+                            dateUpdate = new DateTime(2023, 4, 21, 1, 11, 36, 885, DateTimeKind.Local).AddTicks(7727),
                             description = "Identification du patient",
                             recordLength = 350,
                             recordNumber = "20",
@@ -192,8 +195,8 @@ namespace EFactManagerAPI.Migrations
                         {
                             id = 4,
                             MessageTypeId = 1,
-                            dateCreation = new DateTime(2023, 4, 21, 1, 15, 18, 319, DateTimeKind.Local).AddTicks(3091),
-                            dateUpdate = new DateTime(2023, 4, 21, 1, 15, 18, 319, DateTimeKind.Local).AddTicks(3091),
+                            dateCreation = new DateTime(2023, 4, 21, 1, 11, 36, 885, DateTimeKind.Local).AddTicks(7730),
+                            dateUpdate = new DateTime(2023, 4, 21, 1, 11, 36, 885, DateTimeKind.Local).AddTicks(7731),
                             description = "Données sur la prestation",
                             recordLength = 350,
                             recordNumber = "50",
@@ -203,8 +206,8 @@ namespace EFactManagerAPI.Migrations
                         {
                             id = 5,
                             MessageTypeId = 1,
-                            dateCreation = new DateTime(2023, 4, 21, 1, 15, 18, 319, DateTimeKind.Local).AddTicks(3093),
-                            dateUpdate = new DateTime(2023, 4, 21, 1, 15, 18, 319, DateTimeKind.Local).AddTicks(3094),
+                            dateCreation = new DateTime(2023, 4, 21, 1, 11, 36, 885, DateTimeKind.Local).AddTicks(7733),
+                            dateUpdate = new DateTime(2023, 4, 21, 1, 11, 36, 885, DateTimeKind.Local).AddTicks(7734),
                             description = "enregistrement de type 51",
                             recordLength = 350,
                             recordNumber = "51",
@@ -214,8 +217,8 @@ namespace EFactManagerAPI.Migrations
                         {
                             id = 6,
                             MessageTypeId = 1,
-                            dateCreation = new DateTime(2023, 4, 21, 1, 15, 18, 319, DateTimeKind.Local).AddTicks(3096),
-                            dateUpdate = new DateTime(2023, 4, 21, 1, 15, 18, 319, DateTimeKind.Local).AddTicks(3097),
+                            dateCreation = new DateTime(2023, 4, 21, 1, 11, 36, 885, DateTimeKind.Local).AddTicks(7737),
+                            dateUpdate = new DateTime(2023, 4, 21, 1, 11, 36, 885, DateTimeKind.Local).AddTicks(7738),
                             description = "enregistrement de type 52",
                             recordLength = 350,
                             recordNumber = "52",
@@ -225,8 +228,8 @@ namespace EFactManagerAPI.Migrations
                         {
                             id = 7,
                             MessageTypeId = 1,
-                            dateCreation = new DateTime(2023, 4, 21, 1, 15, 18, 319, DateTimeKind.Local).AddTicks(3099),
-                            dateUpdate = new DateTime(2023, 4, 21, 1, 15, 18, 319, DateTimeKind.Local).AddTicks(3100),
+                            dateCreation = new DateTime(2023, 4, 21, 1, 11, 36, 885, DateTimeKind.Local).AddTicks(7741),
+                            dateUpdate = new DateTime(2023, 4, 21, 1, 11, 36, 885, DateTimeKind.Local).AddTicks(7742),
                             description = "enregistrement de type 80",
                             recordLength = 350,
                             recordNumber = "80",
@@ -236,8 +239,8 @@ namespace EFactManagerAPI.Migrations
                         {
                             id = 8,
                             MessageTypeId = 1,
-                            dateCreation = new DateTime(2023, 4, 21, 1, 15, 18, 319, DateTimeKind.Local).AddTicks(3102),
-                            dateUpdate = new DateTime(2023, 4, 21, 1, 15, 18, 319, DateTimeKind.Local).AddTicks(3102),
+                            dateCreation = new DateTime(2023, 4, 21, 1, 11, 36, 885, DateTimeKind.Local).AddTicks(7744),
+                            dateUpdate = new DateTime(2023, 4, 21, 1, 11, 36, 885, DateTimeKind.Local).AddTicks(7745),
                             description = "enregistrement de type 90",
                             recordLength = 350,
                             recordNumber = "90",
@@ -247,8 +250,8 @@ namespace EFactManagerAPI.Migrations
                         {
                             id = 9,
                             MessageTypeId = 1,
-                            dateCreation = new DateTime(2023, 4, 21, 1, 15, 18, 319, DateTimeKind.Local).AddTicks(3104),
-                            dateUpdate = new DateTime(2023, 4, 21, 1, 15, 18, 319, DateTimeKind.Local).AddTicks(3105),
+                            dateCreation = new DateTime(2023, 4, 21, 1, 11, 36, 885, DateTimeKind.Local).AddTicks(7748),
+                            dateUpdate = new DateTime(2023, 4, 21, 1, 11, 36, 885, DateTimeKind.Local).AddTicks(7749),
                             description = "enregistrement de type 95",
                             recordLength = 350,
                             recordNumber = "95",
@@ -258,8 +261,8 @@ namespace EFactManagerAPI.Migrations
                         {
                             id = 10,
                             MessageTypeId = 1,
-                            dateCreation = new DateTime(2023, 4, 21, 1, 15, 18, 319, DateTimeKind.Local).AddTicks(3107),
-                            dateUpdate = new DateTime(2023, 4, 21, 1, 15, 18, 319, DateTimeKind.Local).AddTicks(3107),
+                            dateCreation = new DateTime(2023, 4, 21, 1, 11, 36, 885, DateTimeKind.Local).AddTicks(7753),
+                            dateUpdate = new DateTime(2023, 4, 21, 1, 11, 36, 885, DateTimeKind.Local).AddTicks(7754),
                             description = "enregistrement de type 96",
                             recordLength = 350,
                             recordNumber = "96",
@@ -269,8 +272,8 @@ namespace EFactManagerAPI.Migrations
                         {
                             id = 11,
                             MessageTypeId = 1,
-                            dateCreation = new DateTime(2023, 4, 21, 1, 15, 18, 319, DateTimeKind.Local).AddTicks(3109),
-                            dateUpdate = new DateTime(2023, 4, 21, 1, 15, 18, 319, DateTimeKind.Local).AddTicks(3109),
+                            dateCreation = new DateTime(2023, 4, 21, 1, 11, 36, 885, DateTimeKind.Local).AddTicks(7756),
+                            dateUpdate = new DateTime(2023, 4, 21, 1, 11, 36, 885, DateTimeKind.Local).AddTicks(7757),
                             description = "Segment 200",
                             recordLength = 67,
                             recordNumber = "200",
@@ -280,8 +283,8 @@ namespace EFactManagerAPI.Migrations
                         {
                             id = 12,
                             MessageTypeId = 1,
-                            dateCreation = new DateTime(2023, 4, 21, 1, 15, 18, 319, DateTimeKind.Local).AddTicks(3111),
-                            dateUpdate = new DateTime(2023, 4, 21, 1, 15, 18, 319, DateTimeKind.Local).AddTicks(3112),
+                            dateCreation = new DateTime(2023, 4, 21, 1, 11, 36, 885, DateTimeKind.Local).AddTicks(7760),
+                            dateUpdate = new DateTime(2023, 4, 21, 1, 11, 36, 885, DateTimeKind.Local).AddTicks(7761),
                             description = "Segment 300",
                             recordLength = 160,
                             recordNumber = "300",
@@ -1010,7 +1013,7 @@ namespace EFactManagerAPI.Migrations
                             dateCreation = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             dateUpdate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             description = "Réservé (réforme de l’état) ",
-                            startPosition = 205,
+                            startPosition = 305,
                             zoneNumber = "53 ",
                             zoneType = "n",
                             zonelength = 8
@@ -4514,7 +4517,7 @@ namespace EFactManagerAPI.Migrations
                             dateCreation = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             dateUpdate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             description = "reserve",
-                            startPosition = 293,
+                            startPosition = 393,
                             zoneNumber = "52 ",
                             zoneType = "n",
                             zonelength = 12
@@ -5330,7 +5333,7 @@ namespace EFactManagerAPI.Migrations
                             dateCreation = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             dateUpdate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             description = "iban - compte financier b (partie 1)",
-                            startPosition = 293,
+                            startPosition = 393,
                             zoneNumber = "52 ",
                             zoneType = "n",
                             zonelength = 12

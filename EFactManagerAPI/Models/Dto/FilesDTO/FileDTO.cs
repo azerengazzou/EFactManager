@@ -11,9 +11,7 @@ namespace EFactManagerAPI.Models.Dto.FilesDTO
         public string fileName { get; set; }
         public string Description { get; set; }
         public float size { get; set; }
-        public string fileUploadedContent { get; set; }
         public DateTime upload_date { get; set; }
         public DateTime update_date { get; set; }
-        public List<Field> Fields { get; set; }
     }
 }

@@ -48,14 +48,17 @@ namespace EFactManagerAPI.Controllers
             {
                 return BadRequest();
             }
-            var file = await _dbFile.GetAsync(x => x.id == id);
+            var file = await _dbFile.GetFileById(id);
 
             if (file == null)
             {
                 return NotFound();
             }
-            return Ok(_mapper.Map<FileDTO>(file));
+            var fileEntityToDisplay=_mapper.Map<FileDTO>(file);
+            return Ok(fileEntityToDisplay);
         }
+
+
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -74,8 +77,8 @@ namespace EFactManagerAPI.Controllers
             {
                 // Traitez le fichier ici
                 var model = await _fileService.CreateFileService(fileuploaded);
-
-                return CreatedAtRoute("GetFile", new { id = model.id }, model);
+                var fileEntityToDisplay = _mapper.Map<FileDTO>(model);
+                return CreatedAtRoute("GetFile", new { id = model.id }, fileEntityToDisplay);
             }
             catch (Exception ex)
             {

@@ -1,6 +1,7 @@
 ﻿using EFactManagerAPI.Data;
 using EFactManagerAPI.Models;
 using EFactManagerAPI.Repository.IRepository;
+using Microsoft.EntityFrameworkCore;
 
 namespace EFactManagerAPI.Repository
 {
@@ -18,5 +19,12 @@ namespace EFactManagerAPI.Repository
             await _db.SaveChangesAsync();
             return entity;
         }
+
+        public async Task CreateZoneContentsAsync(IEnumerable<ZoneContent> contents)
+        {
+            await _db.FileContent.AddRangeAsync(contents);
+            await _db.SaveChangesAsync();
+        }
+
     }
 }

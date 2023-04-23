@@ -22,7 +22,7 @@ namespace EFactManagerAPI
             CreateMap<RecordConfig, RecordDTO>().ReverseMap();
             CreateMap<RecordConfig, RecordCreateDTO>().ReverseMap();
 
-            CreateMap<ZoneConfig, ZoneDTO>().ReverseMap();
+            CreateMap<ZoneConfig, ZoneDTO>().ReverseMap().ForMember(dest => dest.Fields, opt => opt.Ignore()); ;
             CreateMap<ZoneConfig, ZoneCreateDTO>().ReverseMap();
             CreateMap<ZoneConfig, ZoneUpdateDTO>().ReverseMap();
 
