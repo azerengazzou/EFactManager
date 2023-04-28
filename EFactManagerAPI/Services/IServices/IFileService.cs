@@ -8,6 +8,7 @@ namespace EFactManagerAPI.Services.IServices
     public interface IFileService 
     {
         Task<EfactFile> CreateFileService(IFormFile file);
-        Task SplitBodyContentAsync(string contentToSplit, int messageId, int fileId, EfactFile filemodel);
+        Task SplitBodyContentAsync(string filePath, List<RecordConfig> records, int fileId, EfactFile filemodel);
+        Task SplitHeaderContentAsync(List<RecordConfig> records, string header, int fileId, EfactFile filemodel);
     }
 }

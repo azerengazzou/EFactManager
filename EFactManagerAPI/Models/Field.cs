@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using EFactManagerAPI.Models.Dto.ZonesContentDTO;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EFactManagerAPI.Models
@@ -9,6 +10,9 @@ namespace EFactManagerAPI.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Required]
         public int id { get; set; }
+
+        public int? numAttestation { get; set; }
+        public int? numPrestation { get; set; }
         public int FileId { get; set; }
         public EfactFile File { get; set; }
 

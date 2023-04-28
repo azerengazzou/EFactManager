@@ -16,8 +16,13 @@ namespace EFactManagerAPI.Repository
 
         public async Task<List<Field>> GetFieldsByFileId(int fileid)
         {
-            // Eager load the Zones collection for each RecordEntity
-            var fields = await _db.Fields.Where(f => f.FileId == fileid).Include(zc=>zc.ZoneConfig).ThenInclude(rc=>rc.RecordConfig).ToListAsync();
+            var fields = await _db.Fields
+       .Where(f => f.FileId == fileid)
+       .Include(f => f.ZoneContent) // Include FieldContent
+       .Include(zc => zc.ZoneConfig)
+           .ThenInclude(rc => rc.RecordConfig)
+       .ToListAsync();
+
             return fields;
         }
     }
