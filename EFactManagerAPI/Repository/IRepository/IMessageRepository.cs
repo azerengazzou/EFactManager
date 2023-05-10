@@ -7,5 +7,6 @@ namespace EFactManagerAPI.Repository.IRepository
         Task<MessageType> UpdateAsync(MessageType entity);
         MessageType GetMessageByCode(string code);
         Task<MessageType> GetMessageByIdWithRecords(int messageId);
+        Task<List<MessageType>> GetAllMessagesAndRecordsAsync();
     }
 }

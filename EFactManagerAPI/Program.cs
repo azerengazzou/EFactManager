@@ -19,6 +19,9 @@ builder.Services.AddScoped<IFieldRepository, FieldRepository>();
 builder.Services.AddScoped<IEfactFileContentRepository, EfactFileContentRepository>();
 
 builder.Services.AddScoped<IFileService, FileService>();
+builder.Services.AddScoped<IBackUpFileService, BackUpFileService>();
+builder.Services.AddScoped<ISplitFileNoErrorService, SplitFileNoErrorService>();
+builder.Services.AddScoped<ISplitFileErrorService, SplitFileErrorService>();
 
 builder.Services.AddDbContext<ApplicationDbContext>(option =>
 {

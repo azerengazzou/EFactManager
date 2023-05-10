@@ -32,6 +32,14 @@ namespace EFactManagerAPI.Controllers
             return Ok(_mapper.Map<List<MessageDTO>>(messageList));
         }
 
+        [HttpGet("GetMessagesAndRecords")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<IEnumerable<MessageDTO>>> GetMessagesAndRecords()
+        {
+            IEnumerable<MessageType> messageList = await _dbmessage.GetAllMessagesAndRecordsAsync();
+            return Ok(_mapper.Map<List<MessageDTO>>(messageList));
+        }
+
 
         [HttpGet("{id:int}", Name = "GetMessageById")]
         [ProducesResponseType(StatusCodes.Status200OK)]

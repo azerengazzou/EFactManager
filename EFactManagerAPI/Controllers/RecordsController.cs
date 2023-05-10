@@ -59,7 +59,6 @@ namespace EFactManagerAPI.Controllers
         public async Task<ActionResult<RecordDTO>> GetRecord(int id)
         {
             var record = await _dbrecord.GetAsync(x => x.id == id);
-
             if (record == null)
             {
                 return NotFound();
@@ -72,13 +71,14 @@ namespace EFactManagerAPI.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> CreateMessage(RecordCreateDTO recordCreateDTO)
+        public async Task<ActionResult> CreateRecord(RecordCreateDTO recordCreateDTO)
         {
-            if (await _dbrecord.GetAsync(u => u.recordNumber.ToLower() == recordCreateDTO.recordNumber.ToLower()) != null)
-            {
-                ModelState.AddModelError("CustomError", "Record already exist!");
-                return BadRequest(ModelState);
-            }
+            
+            //if (await _dbrecord.GetAsync(u => u.recordNumber.ToLower() == recordCreateDTO.recordNumber.ToLower()) != null )
+            //{
+            //    ModelState.AddModelError("CustomError", "Record already exist!");
+            //    return BadRequest(ModelState);
+            //}
             if (recordCreateDTO == null)
             {
                 return BadRequest();

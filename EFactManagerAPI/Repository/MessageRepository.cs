@@ -32,6 +32,16 @@ namespace EFactManagerAPI.Repository
             return message;
         }
 
+        public async Task<List<MessageType>> GetAllMessagesAndRecordsAsync()
+        {
+            var message = await _db.Messages.Include(r=>r.RecordConfigs).ToListAsync();
+            if (message == null)
+            {
+                return null;
+            }
+            return message;
+        }
+
         public async Task<MessageType> GetMessageByIdWithRecords(int messageId)
         {
             // Eager load the Zones collection for each RecordEntity

@@ -9,6 +9,7 @@ namespace EFactManagerAPI.Models.Dto.FilesDTO
         public int id { get; set; }
         [Required]
         public string fileName { get; set; }
+        public string fileUploadedContent { get; set; }
         public string Description { get; set; }
         public float size { get; set; }
         public DateTime upload_date { get; set; }
