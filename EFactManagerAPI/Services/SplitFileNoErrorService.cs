@@ -34,7 +34,8 @@ namespace EFactManagerAPI.Services
             var header = headerToSpllt;
             var zoneContentList = new List<ZoneContent>();
 
-            var headerStartRecord = headerRecords.FirstOrDefault(h => h.recordNumber.Equals(header.Substring(0, 6)));
+
+            var headerStartRecord = headerRecords.FirstOrDefault(h => h.recordNumber.Equals("200"));
             var headerZones = await _zoneRepository.GetZonesByRecordIdAsync(headerStartRecord.id);
 
             try
@@ -60,6 +61,8 @@ namespace EFactManagerAPI.Services
                             {
                                 FileId = filemodel.id,
                                 ZoneConfigId = zoneHeader.id,
+                                numAttestation=0,
+                                numPrestation=0
                             };
 
                             contentModel.Field = field;
@@ -95,6 +98,8 @@ namespace EFactManagerAPI.Services
                             {
                                 FileId = filemodel.id,
                                 ZoneConfigId = zoneHeader.id,
+                                numAttestation = 0,
+                                numPrestation = 0
                             };
 
                             contentModel.Field = field;

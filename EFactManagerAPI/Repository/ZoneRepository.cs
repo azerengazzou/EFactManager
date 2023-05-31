@@ -24,8 +24,8 @@ namespace EFactManagerAPI.Repository
         public async Task<List<ZoneConfig>> GetZonesByRecordIdAsync(int recordId)
         {
             // Eager load the Zones collection for each RecordEntity
-            var records = await _db.Zones.Where(r => r.RecordConfigId == recordId).Include(zr=>zr.ZoneError).ToListAsync();
-            return records;
+            var zones = await _db.Zones.Where(r => r.RecordConfigId == recordId).ToListAsync();
+            return zones;
         }
     }
 }

@@ -4,6 +4,7 @@ using EFactManagerAPI.Models.Dto.FilesDTO;
 using EFactManagerAPI.Repository;
 using EFactManagerAPI.Repository.IRepository;
 using EFactManagerAPI.Services.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +30,7 @@ namespace EFactManagerAPI.Controllers
 
         }
 
+        //[Authorize(Roles = "ADMIN")]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<FileDTO>>> GetFiles()

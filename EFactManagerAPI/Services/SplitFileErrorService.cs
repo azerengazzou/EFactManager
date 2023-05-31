@@ -4,6 +4,7 @@ using EFactManagerAPI.Models.Dto.ZonesContentDTO;
 using EFactManagerAPI.Models;
 using EFactManagerAPI.Repository.IRepository;
 using EFactManagerAPI.Services.IServices;
+using NPOI.SS.Formula.Functions;
 
 namespace EFactManagerAPI.Services
 {
@@ -11,14 +12,17 @@ namespace EFactManagerAPI.Services
     {
 
         private readonly IZoneRepository _zoneRepository;
+        private readonly IZoneErrorRepository _zoneErrorRepository;
         private readonly IEfactFileContentRepository _factFileContentRepository;
         private readonly IMapper _mapper;
         public SplitFileErrorService(
                              IZoneRepository zoneRepository,
                             IEfactFileContentRepository factFileContentRepository,
+                            IZoneErrorRepository zoneErrorRepository,
                             IMapper mapper)
         {
             _mapper = mapper;
+            _zoneErrorRepository= zoneErrorRepository;
             _zoneRepository = zoneRepository;
             _factFileContentRepository = factFileContentRepository;
         }
@@ -33,8 +37,9 @@ namespace EFactManagerAPI.Services
             int startpos = 0;
             var header = headerToSpllt;
             var zoneContentList = new List<ZoneContent>();
+            var errorsList = await _zoneErrorRepository.GetAllAsync();
 
-            var headerStartRecord = headerRecords.FirstOrDefault(h => h.recordNumber.Equals(header.Substring(0, 6)));
+            var headerStartRecord = headerRecords.FirstOrDefault(h => h.recordNumber.Equals("200"));
             var headerZones = await _zoneRepository.GetZonesByRecordIdAsync(headerStartRecord.id);
 
             try
@@ -60,6 +65,7 @@ namespace EFactManagerAPI.Services
                             {
                                 FileId = filemodel.id,
                                 ZoneConfigId = zoneHeader.id,
+                                isError=false,
                             };
 
                             contentModel.Field = field;
@@ -82,26 +88,36 @@ namespace EFactManagerAPI.Services
                             {
                                 throw new Exception("Zone length is greater than record length.");
                             }
-
                             var zoneHeaderSplit = recordSplit.Substring(startpos, zoneHeader.zonelength);
                             startpos = (startpos + zoneHeader.zonelength);
                             var contentModel = new ZoneContentCreateDTO
                             {
                                 content = zoneHeaderSplit,
                                 description = zoneHeader.description,
+                                Field = new FieldCreateDTO
+                                {
+                                    FileId = filemodel.id,
+                                    ZoneConfigId = zoneHeader.id,
+                                    isError = false,
+                                }
                             };
-
-                            var field = new FieldCreateDTO
-                            {
-                                FileId = filemodel.id,
-                                ZoneConfigId = zoneHeader.id,
-                            };
-
-                            contentModel.Field = field;
 
                             ZoneContent contentModeltoDB = _mapper.Map<ZoneContent>(contentModel);
                             zoneContentList.Add(contentModeltoDB);
+
+                            if (zoneHeader.description.Contains("Code rejet"))
+                            {
+                                var errorDetected = errorsList.FirstOrDefault(err => err.codeError.Equals(zoneHeaderSplit));
+                                if (errorDetected != null)
+                                {
+                                    contentModel.Field.isError = true;
+                                    contentModel.Field.ZoneErrorId = errorDetected.id;
+                                    contentModel.Field.ZoneError = errorDetected;
+                                }
+                            }
+
                         }
+
                         if (header.Length != 0 & headerRecords.Last() == headerRecordsConfig)
                         {
                             await _factFileContentRepository.CreateZoneContentsAsync(zoneContentList);
@@ -119,12 +135,13 @@ namespace EFactManagerAPI.Services
 
         public async Task SplitBodyContentAsync(string filePath, List<RecordConfig> records, int fileId, EfactFile filemodel)
         {
-
             List<RecordConfig> bodyAndFooterRecords = records.Where(r => r.recordPlacement != "header").ToList();
             int recordLength = 0;
+
             var zoneContentList = new List<ZoneContent>();
             int numAttestation = 0;
             int numPrestation = 0;
+            var errorsList = await _zoneErrorRepository.GetAllAsync();
 
             try
             {
@@ -167,7 +184,10 @@ namespace EFactManagerAPI.Services
                                 recordLength = specificRec.recordLength;
                                 var recordSplit = restOfFile.Substring(0, recordLength);
                                 restOfFile = restOfFile.Substring(recordLength);
-
+                                if (specificRec.Equals("50"))
+                                {
+                                    Console.WriteLine("50 detected");
+                                }
                                 if (zones != null)
                                 {
                                     foreach (ZoneConfig zone in zones)
@@ -184,33 +204,45 @@ namespace EFactManagerAPI.Services
                                         {
                                             content = zonesplit,
                                             description = zone.description,
+                                            Field = new FieldCreateDTO
+                                            {
+                                                FileId = filemodel.id,
+                                                ZoneConfigId = zone.id,
+                                                numAttestation = numAttestation,
+                                                numPrestation = numPrestation,
+                                                isError = false
+                                            }
                                         };
 
-                                        var field = new FieldCreateDTO
+                                        if (zone.description.Contains("Code rejet"))
                                         {
-                                            FileId = filemodel.id,
-                                            ZoneConfigId = zone.id,
-                                            numAttestation = numAttestation,
-                                            numPrestation = numPrestation,
-                                        };
-
-                                        contentModel.Field = field;
+                                            var errorDetected = errorsList.FirstOrDefault(err => err.codeError.Equals(zonesplit));
+                                            if (errorDetected != null)
+                                            {
+                                                contentModel.Field.isError = true;
+                                                contentModel.Field.ZoneErrorId = errorDetected.id;
+                                                contentModel.Field.ZoneError = errorDetected;
+                                            }
+                                        }
 
                                         ZoneContent contentModeltoDB = _mapper.Map<ZoneContent>(contentModel);
                                         zoneContentList.Add(contentModeltoDB);
                                     }
+
                                 }
                             }
+                            else
+                            {
+                                restOfFile = restOfFile.Substring(800);
+                            }
                         }
-
+                        await _factFileContentRepository.CreateZoneContentsAsync(zoneContentList);
                     }
                     catch (Exception ex)
                     {
                         throw;
                     }
-
                 }
-                await _factFileContentRepository.CreateZoneContentsAsync(zoneContentList);
             }
             catch (Exception ex)
             {

@@ -104,14 +104,13 @@ namespace EFactManagerAPI.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> DeleteMessage(string id)
+        public async Task<ActionResult> DeleteMessage(int id)
         {
-                if (id.Length != 6)
+            if (id == null)
                 {
                     return BadRequest();
                 }
-
-                var message = await _dbmessage.GetAsync(x => x.messageCode == id);
+                var message = await _dbmessage.GetAsync(x => x.id == id);
 
                 if (message == null)
                 {

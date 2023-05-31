@@ -1,0 +1,149 @@
+{
+  "GlobalConfiguration": {
+    "BaseUrl": "https://localhost:7287"
+  },
+
+  "Routes": [
+    //Authentication
+    {
+      "UpstreamPathTemplate": "/api/Account",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7203
+        }
+      ],
+      "DownstreamPathTemplate": "/api/Account"
+    },
+
+    //Efact Routes
+    {
+      "UpstreamPathTemplate": "/gateway/Files",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/FileAPI",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7289
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedRoles": [ "DOCTOR" ],
+        "ProviderRootUrl": "https://localhost:7203"
+
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/mygateway/Files",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/FileAPI",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7289
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/Files/{id}",
+      "UpstreamHttpMethod": [ "Get", "Delete" ],
+      "DownstreamPathTemplate": "/api/FileAPI/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7289
+        }
+      ]
+    },
+
+    //Message Type Routes
+    {
+      "UpstreamPathTemplate": "/gateway/MessageType",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/FileMessagesAPI",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7289
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/MessageType",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamPathTemplate": "/api/FileMessagesAPI",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7289
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/MessageType&Records",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/FileMessagesAPI/GetMessagesAndRecords",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7289
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/MessageType/{id}",
+      "UpstreamHttpMethod": [ "Delete" ],
+      "DownstreamPathTemplate": "/api/FileMessagesAPI/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7289
+        }
+      ]
+    },
+
+    //Records Config Routes
+    {
+      "UpstreamPathTemplate": "/gateway/RecordConfig",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamPathTemplate": "/api/RecordsAPI",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7289
+        }
+      ]
+    },
+
+    //Fields Routes
+    {
+      "UpstreamPathTemplate": "/gateway/AllFields/{fileId}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/FieldAPI/GetAllFieldsByFileId?fileId={fileId}&pageNumber=1&pageSize=5000",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7289
+        }
+      ],
+      "FileCacheOptions": {
+        "TtlSeconds": 60
+      }
+    }
+  ]
+}
+
+
+

@@ -23,7 +23,6 @@ namespace EFactManagerAPI.Models
 
         public int RecordConfigId { get; set; }
         public RecordConfig RecordConfig { get; set; }
-        public ZoneError ZoneError { get; set; }
         public List<Field> Fields { get; set; }
 
     }

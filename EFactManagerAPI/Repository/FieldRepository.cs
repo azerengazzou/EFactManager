@@ -17,11 +17,12 @@ namespace EFactManagerAPI.Repository
         public async Task<List<Field>> GetFieldsByFileId(int fileid)
         {
             var fields = await _db.Fields
-       .Where(f => f.FileId == fileid)
-       .Include(f => f.ZoneContent) // Include FieldContent
-       .Include(zc => zc.ZoneConfig)
-           .ThenInclude(rc => rc.RecordConfig)
-       .ToListAsync();
+               .Where(f => f.FileId == fileid)
+               .Include(f => f.ZoneContent) // Include the content
+               .Include(er=>er.ZoneError)
+               .Include(zc => zc.ZoneConfig)
+                   .ThenInclude(rc => rc.RecordConfig)
+                    .ToListAsync();
 
             return fields;
         }

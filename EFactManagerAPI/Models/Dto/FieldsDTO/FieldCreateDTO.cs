@@ -8,12 +8,14 @@ namespace EFactManagerAPI.Models.Dto.FieldsDTO
         [Required]
         public int FileId { get; set; }
         public EfactFile File { get; set; }
-
+        public bool? isError { get; set; }
         public int? numAttestation { get; set; }
         public int? numPrestation { get; set; }
         public int ZoneConfigId { get; set; }
         public ZoneConfig ZoneConfig { get; set; }
         public int zoneContentId { get; set; }
         public ZoneContentCreateDTO ZoneContent { get; set; }
+        public int? ZoneErrorId { get; set; }
+        public ZoneError? ZoneError { get; set; }
     }
 }

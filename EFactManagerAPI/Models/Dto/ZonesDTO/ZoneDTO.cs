@@ -18,13 +18,9 @@ namespace EFactManagerAPI.Models.Dto.ZonesDTO
         public string description { get; set; }
         public DateTime dateCreation { get; set; }
         public DateTime dateUpdate { get; set; }
-
-
         public int RecordConfigId { get; set; }
         public RecordDTO RecordConfig { get; set; }
-        public ZoneError ZoneError { get; set; }
+        //public List<Field> Fields { get; set; }
 
-        public int FieldId { get; set; }
-    
     }
 }

@@ -11,13 +11,15 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+//Repositorys
 builder.Services.AddScoped<IMessageRepository, MessageRepository>();
 builder.Services.AddScoped<IFileRepository, FileRepository>();
 builder.Services.AddScoped<IRecordRepository, RecordRepository>();
 builder.Services.AddScoped<IZoneRepository, ZoneRepository>();
 builder.Services.AddScoped<IFieldRepository, FieldRepository>();
 builder.Services.AddScoped<IEfactFileContentRepository, EfactFileContentRepository>();
-
+builder.Services.AddScoped<IZoneErrorRepository, ZoneErrorRepository>();
+//services
 builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<IBackUpFileService, BackUpFileService>();
 builder.Services.AddScoped<ISplitFileNoErrorService, SplitFileNoErrorService>();
@@ -31,7 +33,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(option =>
 builder.Services.AddAutoMapper(typeof(MappingConfig)); //Configuration de l'automapper
 builder.Services.AddControllers(option =>
 {
-    // option.ReturnHttpNotAcceptable=true;
+
+// option.ReturnHttpNotAcceptable=true;
 }).AddNewtonsoftJson(options =>
 {
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
@@ -53,6 +56,17 @@ builder.Services.AddCors(options =>
         });
 });
 
+
+
+var httpClientHandler = new HttpClientHandler
+{
+    ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
+};
+var httpClient = new HttpClient(httpClientHandler);
+
+
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -62,12 +76,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseAuthentication();
 app.UseCors("AllowAll");
 
 
 app.UseHttpsRedirection();
-
-app.UseAuthorization();
 
 app.MapControllers();
 

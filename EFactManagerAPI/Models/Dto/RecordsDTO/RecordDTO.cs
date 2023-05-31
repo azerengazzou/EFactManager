@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using EFactManagerAPI.Models.Dto.ZonesDTO;
 
 namespace EFactManagerAPI.Models.Dto.RecordsDTO
 {
@@ -17,5 +18,6 @@ namespace EFactManagerAPI.Models.Dto.RecordsDTO
         public DateTime dateUpdate { get; set; }
         public int MessageTypeId { get; set; }
         public MessageType MessageType { get; set; }
+        //public List<ZoneDTO> ZoneConfigs { get; set; }
     }
 }

@@ -13,8 +13,12 @@ namespace EFactManagerAPI.Models
 
         public int? numAttestation { get; set; }
         public int? numPrestation { get; set; }
+        public bool? isError { get; set; }
         public int FileId { get; set; }
         public EfactFile File { get; set; }
+
+        public int? ZoneErrorId { get; set; }
+        public ZoneError? ZoneError { get; set; }
 
         public int ZoneConfigId { get; set; }
         public ZoneConfig ZoneConfig { get; set; }

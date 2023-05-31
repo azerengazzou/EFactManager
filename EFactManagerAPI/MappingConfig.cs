@@ -4,6 +4,7 @@ using EFactManagerAPI.Models.Dto.FieldsDTO;
 using EFactManagerAPI.Models.Dto.FilesDTO;
 using EFactManagerAPI.Models.Dto.MessagesDTO;
 using EFactManagerAPI.Models.Dto.RecordsDTO;
+using EFactManagerAPI.Models.Dto.ZoneErrorDTO;
 using EFactManagerAPI.Models.Dto.ZonesContentDTO;
 using EFactManagerAPI.Models.Dto.ZonesDTO;
 
@@ -31,6 +32,9 @@ namespace EFactManagerAPI
 
             CreateMap<Field, FieldDTO>().ReverseMap();
             CreateMap<Field, FieldCreateDTO>().ReverseMap();
+
+            CreateMap<ZoneError, ZoneErrorDTO>().ReverseMap();
+            CreateMap<ZoneError, ZoneErrorCreateDTO>().ReverseMap();
 
         }
     }

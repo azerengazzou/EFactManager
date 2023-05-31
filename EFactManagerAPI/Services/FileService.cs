@@ -19,7 +19,6 @@ namespace EFactManagerAPI.Services
         private readonly IFileRepository _dbfile;
         private readonly IMessageRepository _messageRepository;
         private readonly IRecordRepository _recordRepository;
-
         private readonly IBackUpFileService _backUpFileService;
         private readonly ISplitFileNoErrorService _splitFileNoErrorService;
         private readonly ISplitFileErrorService _splitFileErrorService;
@@ -64,17 +63,18 @@ namespace EFactManagerAPI.Services
             {
                 filemodel.Description = message.description;
                 EfactFile modeltodb = _mapper.Map<EfactFile>(filemodel);
-                await _dbfile.CreateAsync(modeltodb);
+                
 
                 var filepath= _backUpFileService.BackUpFileCreation(file);
+
+                await _dbfile.CreateAsync(modeltodb);
                 var records = await _recordRepository.GetRecordsByMessageIdAsync(message.id);
                 var headerRecords = records.Where(hrec => hrec.recordPlacement.Equals("header"));
 
-                if (code.Equals(920000))
+                if (code.Equals("920000"))
                 {
                     using (StreamReader reader = new StreamReader(filepath))
                     {
-
                         string contentToSplit = await reader.ReadToEndAsync();
                         string header = contentToSplit.Substring(0, 227);
                         string restOfFile = contentToSplit.Substring(227);
@@ -90,8 +90,7 @@ namespace EFactManagerAPI.Services
                         string contentToSplit = await reader.ReadToEndAsync();
                         string header = contentToSplit.Substring(0, 677);
                         string restOfFile = contentToSplit.Substring(677);
-
-                       // await _splitFileErrorService.SplitHeaderContentAsync(records, header, modeltodb.id, modeltodb);
+                        await _splitFileErrorService.SplitHeaderContentAsync(records, header, modeltodb.id, modeltodb);
                         await _splitFileErrorService.SplitBodyContentAsync(filepath, records, modeltodb.id, modeltodb);
                     }
                 }
